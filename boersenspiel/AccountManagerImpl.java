@@ -1,6 +1,9 @@
 package boersenspiel;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,11 +37,11 @@ public class AccountManagerImpl implements AccountManager {
 
     public String buy(String playerName, String shareName, int amount) throws PlayerNotFoundException, NotEnoughMoneyException {
 
+        Share share = provider.search(StockPriceProvider.shares, shareName);
+        ShareItem item = new ShareItem(share, amount);
         Player bob = gambler.get(playerName);
         if (bob == null)
             throw new PlayerNotFoundException("Der Spieler mit dem Namen " + playerName + " wurde nicht gefunden.");
-        Share share = provider.search(StockPriceProvider.shares, shareName);
-        ShareItem item = new ShareItem(share, amount);
 
         if (item.getValue() <= bob.getCAcc().getValue()) {
             log.log(Level.FINER, playerName + " besitzt genügend Geld für " + shareName);
@@ -47,7 +50,7 @@ public class AccountManagerImpl implements AccountManager {
         } else {
             throw new NotEnoughMoneyException("Nicht genügend Geld.");
         }
-        bob.getTrans().add(new Transaction(bob, share, amount));
+        bob.getTrans().add(new Transaction(bob, share, amount, "Einkauf"));
         return "Spieler " + playerName + " hat " + amount + " " + shareName + "-Aktien zum Preis von " + share.getValue() + " gekauft.";
 
     }
@@ -55,9 +58,9 @@ public class AccountManagerImpl implements AccountManager {
     public String sell(String playerName, String shareName, int amount) throws PlayerNotFoundException, ShareNotFoundException,
             NotEnoughSharesException, NotEnoughMoneyException {
 
-        Player bob = gambler.get(playerName);
         Share share = provider.search(StockPriceProvider.shares, shareName);
         ShareItem item = new ShareItem(share, amount);
+        Player bob = gambler.get(playerName);
 
         if (share != null && bob != null) {
             if (bob.getSAcc().getItems().containsKey(item.getName())) {
@@ -79,7 +82,7 @@ public class AccountManagerImpl implements AccountManager {
                 throw new NullPointerException("Spieler- oder Aktienname nicht gefunden.");
             }
         }
-        bob.getTrans().add(new Transaction(bob, share, amount));
+        bob.getTrans().add(new Transaction(bob, share, amount, "Verkauf"));
         return "Spieler " + playerName + " hat " + amount + " " + shareName + "-Aktien zum Preis von " + share.getValue() + " verkauft.";
     }
 
@@ -88,7 +91,7 @@ public class AccountManagerImpl implements AccountManager {
         Player bob = gambler.get(playerName);
         if (bob == null)
             throw new PlayerNotFoundException("Spieler nicht gefunden.");
-        
+
         return bob.getCAcc().getValue();
     }
 
@@ -101,7 +104,7 @@ public class AccountManagerImpl implements AccountManager {
 
         for (ShareItem item : bob.getSAcc().getItems().values())
             value += item.getValue();
-        
+
         return value;
     }
 
@@ -136,7 +139,7 @@ public class AccountManagerImpl implements AccountManager {
         else
             return false;
     }
-    
+
     public void turnAgentOn(String playerName) throws PlayerNotFoundException {
         Player bob = gambler.get(playerName);
         PlayerAgent agent = new RandomPlayerAgent(bob, provider);
@@ -147,4 +150,22 @@ public class AccountManagerImpl implements AccountManager {
         return gambler;
     }
 
+    public void showTrans(String playerName, int OPTION) {
+
+        switch (OPTION) {
+        case 1:
+            for (Transaction t : gambler.get(playerName).getTrans())
+                System.out.println(t.toString());
+            break;
+
+        case 2:
+            Comparator<Transaction> comp = new TransNameComparator();
+            Collections.sort(gambler.get(playerName).getTrans(), comp);
+            for (Transaction t : gambler.get(playerName).getTrans())
+                System.out.println(t.toString());
+            break;
+
+        }
+
+    }
 }

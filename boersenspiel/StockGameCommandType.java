@@ -13,7 +13,9 @@ public enum StockGameCommandType implements CommandTypeInfo {
     SHARESVALUE    ("getSharesValueOf", "      <playername>                        * show value of all shares of player ", String.class),
     ALLASSETS      ("getAllAssetsOf", "        <playername>                        * show how rich a player is ", String.class),
     CHECKFORPROFIT ("checkForProfit", "        <playername> <sharename>            * show if it's worth it to sell this kind of share now ", String.class, String.class),
-    AGENTON        ("turnAgentOn", "           <playername>                        * turn on an agent for this player", String.class )
+    AGENTON        ("turnAgentOn", "           <playername>                        * turn on an agent for this player", String.class ),
+    TRANSACTION    ("showTrans", "             <playername> <option>               * get all transactions sorted by time (option '1'), sorted by type and time (option '2') or only transactions of one type sorted by time (option '3')", String.class, int.class),
+    
     ;
 
     private String cmd;

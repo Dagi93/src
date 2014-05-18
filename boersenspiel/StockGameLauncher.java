@@ -40,7 +40,7 @@ public class StockGameLauncher {
         try {
             processor.process();
         } catch (Exception e) {
-            System.out.println(e.getCause().getMessage());
+            System.out.println(e.getMessage());
             System.out.println("Das Programm wurde beendet.");
         }
         
