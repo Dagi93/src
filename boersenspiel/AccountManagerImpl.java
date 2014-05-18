@@ -159,18 +159,18 @@ public class AccountManagerImpl implements AccountManager {
         
         switch (tc) {
         case 1:
-            for (Transaction t : gambler.get(playerName).getTrans())
-                System.out.println(t.toString());
-            break;
-
-        case 2:
-            Comparator<Transaction> comp = new TransNameComparator();
+            Comparator<Transaction> comp = new TransTimeComparator();
             Collections.sort(gambler.get(playerName).getTrans(), comp);
             for (Transaction t : gambler.get(playerName).getTrans())
                 System.out.println(t.toString());
             break;
+        case 2:
+            Comparator<Transaction> comp1 = new TransNameComparator();
+            Collections.sort(gambler.get(playerName).getTrans(), comp1);
+            for (Transaction t : gambler.get(playerName).getTrans())
+                System.out.println(t.toString());
+            break;
 
-        
         case 0:
         Comparator<Transaction> comp2 = new TransNameComparator();
         Collections.sort(gambler.get(playerName).getTrans(), comp2);
