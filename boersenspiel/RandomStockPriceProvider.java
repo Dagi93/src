@@ -1,4 +1,5 @@
 package boersenspiel;
+
 import java.util.Random;
 
 public class RandomStockPriceProvider extends StockPriceProvider {
@@ -6,10 +7,10 @@ public class RandomStockPriceProvider extends StockPriceProvider {
 
     @Override
     public void updateShareRate(Share share) {
-        long number = random.nextInt()/100000000;
-        
-        share.setValue(number);
-        
+        long number = random.nextInt() / 100000000;
+
+        share.addValue(number);
+
     }
 
 }

@@ -1,31 +1,29 @@
 package boersenspiel;
 
-
 public class ShareItem extends Asset {
-    private int sAmount;
-    private long purchaseValue = 0;
+    private int amount;
 
-    
-    /**Konstruktor*/
-    public ShareItem (Share share, int amount){
+    /** Konstruktor */
+    public ShareItem(Share share, int amount) {
         this.setName(share.getName());
-        this.setSAmount(amount);
-        this.setValue(share.getValue()*amount);
-    }
-    
-    public int getSAmount() {
-        return sAmount;
+        this.setAmount(amount);
+        this.setValue(share.getValue() * amount);
     }
 
-    public void setSAmount(int difference) {
-        this.sAmount = this.sAmount + difference;
+    public int getAmount() {
+        return amount;
+    }
+
+    public void addAmount(int difference) {
+        this.amount = this.amount + difference;
     }
     
+    public void setAmount(int amount){
+        this.amount = amount;
+    }
 
     public String toString() {
-        return "Name: " + this.getName() + ", Menge: " + this.getSAmount() + ", Gesamtwert: " + (double)this.getValue()/100 + "€.";
+        return "Name: " + this.getName() + ", Menge: " + this.getAmount() + ", Gesamtwert: " + (double) this.getValue() / 100 + "€.";
     }
 
-    
-    
 }

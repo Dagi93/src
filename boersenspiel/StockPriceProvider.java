@@ -1,33 +1,37 @@
 package boersenspiel;
-import java.util.TimerTask;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.TimerTask;
 
 public abstract class StockPriceProvider implements StockPriceInfo {
 
-    static Share[] shareCollection = new Share[0];
+    static ArrayList<Share> shares = new ArrayList<Share>();
     Zeitgeist gini = Zeitgeist.getInstance();
-    
-    public StockPriceProvider(){
 
-      shareCollection = new Share[11];
-      shareCollection[0] = new Share(1500, "bmw");
-      shareCollection[1] = new Share(1200, "siemens");
-      shareCollection[2] = new Share(1000, "nokia");
-      shareCollection[3] = new Share(4900, "audi");
-      shareCollection[4] = new Share(8900, "vw");
-      shareCollection[5] = new Share(4560, "sony");
-      shareCollection[6] = new Share(1542, "lenovo");
-      shareCollection[7] = new Share(1212, "microsoft");
-      shareCollection[8] = new Share(6266, "apple");
-      shareCollection[9] = new Share(5000, "hugo boss");
-      shareCollection[10] = new Share(3700, "kuka");
+    public StockPriceProvider() {
+
+        shares.add(new Share(1500, "bmw"));
+        shares.add(new Share(1200, "siemens"));
+        shares.add(new Share(1000, "nokia"));
+        shares.add(new Share(4900, "audi"));
+        shares.add(new Share(8900, "vw"));
+        shares.add(new Share(4560, "sony"));
+        shares.add(new Share(1542, "lenovo"));
+        shares.add(new Share(1212, "microsoft"));
+        shares.add(new Share(6266, "apple"));
+        shares.add(new Share(5000, "hugo boss"));
+        shares.add(new Share(3700, "kuka"));
+        
+        Collections.sort(shares);
     }
-    
-    
+        
+        
     @Override
     public long getShareValue(String shareName) {
 
-        Share temp = search(ConstStockPriceProvider.shareCollection, shareName);
+        Share temp = search(ConstStockPriceProvider.shares, shareName);
         if (temp != null) {
             return temp.getValue();
         } else {
@@ -38,23 +42,23 @@ public abstract class StockPriceProvider implements StockPriceInfo {
     @Override
     public String allSharesToString() {
         String s = "";
-        for (int index = 0; index < shareCollection.length; index++){
-            s += shareCollection[index].getName() + "(" + shareCollection[index].getValue() + "), <br>"; 
+        for (Share share : shares ) {
+            s += share.getName() + "(" + share.getValue() + "), <br>";
         }
         return s;
     }
-    
+
     public abstract void updateShareRate(Share share);
-    
-    public void updateShareRates(){
-        for(int index = 0; index < shareCollection.length; index++){
-            Share temp = shareCollection[index];
-            
+
+    public void updateShareRates() {
+        for (Share share : shares) {
+            Share temp = share;
+
             updateShareRate(temp);
         }
     }
-    
-    public void startUpdate(){
+
+    public void startUpdate() {
 
         final Zeitgeist timer = Zeitgeist.getInstance();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -64,12 +68,12 @@ public abstract class StockPriceProvider implements StockPriceInfo {
         }, 2000, 1000);
     }
 
-    public Share search(Share[] collection, String shareName) {
+    public Share search(Collection<Share> c, String shareName) {
 
-        if (collection.length > 0) {
-            for (int index = 0; index < collection.length; index++) {
-                if (collection[index].getName().equals(shareName)) {
-                    return collection[index];
+        if (c.size() > 0) {
+            for (Share s : c) {
+                if (s.getName().equals(shareName)) {
+                    return s;
                 }
             }
         }

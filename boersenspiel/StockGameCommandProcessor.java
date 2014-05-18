@@ -1,4 +1,5 @@
 package boersenspiel;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,9 +29,9 @@ public class StockGameCommandProcessor {
         CommandScanner commandScanner = new CommandScanner(StockGameCommandType.values(), shellReader);
         while (true) { // die Schleife über alle Kommandos, jeweils ein
                        // Durchlauf pro Eingabezeile
-            
+
             commandScanner.readIn();
-            
+
             CommandDescriptor command = new CommandDescriptor();
 
             try {
@@ -43,7 +44,7 @@ public class StockGameCommandProcessor {
             Object[] params = command.getParams();
 
             StockGameCommandType commandType = (StockGameCommandType) command.getCommandType();
-            
+
             switch (commandType) {
             case EXIT: {
                 System.exit(200);
@@ -63,8 +64,9 @@ public class StockGameCommandProcessor {
                     Method method = accMan.getClass().getMethod(commandType.getName(), commandType.getParamTypes());
                     Object test = method.invoke(accMan, params);
 
-                    if (test != null){
-                        log.log(Level.FINE, (String) test);
+                    if (test != null) {
+//                        String s = (String) test;
+//                        log.log(Level.FINE, s);
                         System.out.println(test);
                     }
 
@@ -82,12 +84,12 @@ public class StockGameCommandProcessor {
                 } catch (NullPointerException e) {
                     log.log(Level.SEVERE, e.getCause().getMessage());
                     System.out.println(e.getCause().getMessage());
-                } catch (InvocationTargetException e){
+                } catch (InvocationTargetException e) {
                     log.log(Level.SEVERE, e.getCause().getMessage());
                     System.out.println(e.getCause().getMessage());
-                    
+
                 }
-                
+
             }
             }
         }

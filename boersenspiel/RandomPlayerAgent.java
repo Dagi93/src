@@ -1,4 +1,5 @@
 package boersenspiel;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,9 +17,10 @@ public class RandomPlayerAgent implements PlayerAgent {
     }
 
     @Override
-    public void buy(AccountManagerImpl impl){
-        int sharePosition = (int) (Math.random() * StockPriceProvider.shareCollection.length);
-        String share = StockPriceProvider.shareCollection[sharePosition].getName();
+    public void buy(AccountManagerImpl impl) {
+        int sharePosition = (int) (Math.random() * StockPriceProvider.shares.size());
+        Share[] sa = (Share[])StockPriceProvider.shares.toArray();
+        String share = sa[sharePosition].getName();
         int amount = (int) (Math.random() * 30) + 1;
 
         try {
@@ -26,18 +28,22 @@ public class RandomPlayerAgent implements PlayerAgent {
         } catch (PlayerNotFoundException e) {
             System.out.println("Spieler nicht gefunden.");
         } catch (NotEnoughMoneyException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("Nicht genügend Geld.");
         }
     }
 
     @Override
-    public void sell(AccountManagerImpl impl){
-        if (bob.getSAcc().getCollection().length > 0) {
-            int sharePosition = (int) (Math.random() * bob.getSAcc().getCollection().length);
-            String share = bob.getSAcc().getCollection()[sharePosition].getName();
-            int amount = (int) (Math.random() * bob.getSAcc().getCollection()[sharePosition].getSAmount()) + 1;
-
+    public void sell(AccountManagerImpl impl) {
+        int amount = 0;
+        
+        if (bob.getSAcc().getItems().size() > 0) {
+            int sharePosition = (int) (Math.random() * bob.getSAcc().getItems().size());
+            Share[] sa = (Share[])StockPriceProvider.shares.toArray();
+            String share = sa[sharePosition].getName();
+            for(ShareItem si : bob.getSAcc().getItems().values())
+                if(si.getName().equals(share)){
+                    amount = (int) (Math.random() * si.getAmount()) + 1;
+                }
             try {
                 impl.sell(bob.getName(), share, amount);
             } catch (PlayerNotFoundException e) {
@@ -56,12 +62,12 @@ public class RandomPlayerAgent implements PlayerAgent {
     }
 
     @Override
-    public void doTransaction(AccountManagerImpl impl){
+    public void doTransaction(AccountManagerImpl impl) {
         int decision = (int) (Math.random() * 10);
         if (decision < 5)
-                buy(impl);
+            buy(impl);
         else
-                sell(impl);
+            sell(impl);
     }
 
     @Override
@@ -71,9 +77,9 @@ public class RandomPlayerAgent implements PlayerAgent {
         agentTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 System.out.println("It works!");
-                    
-                        doTransaction(impl);
-                    
+
+                doTransaction(impl);
+
             }
         }, 2000, 3000);
 

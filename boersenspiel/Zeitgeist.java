@@ -1,7 +1,8 @@
 package boersenspiel;
+
 import java.util.Timer;
 
-public class Zeitgeist extends Timer{
+public class Zeitgeist extends Timer {
     private static Zeitgeist theInstance;
 
     private Zeitgeist() {

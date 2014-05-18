@@ -1,9 +1,8 @@
 package boersenspiel;
+
 import commandShell.CommandTypeInfo;
 
-
-public enum StockGameCommandType implements CommandTypeInfo{
-    
+public enum StockGameCommandType implements CommandTypeInfo {
 
     HELP           ("help", "                                                      * list all commands"),
     EXIT           ("exit", "                                                      * exit program"),
@@ -20,16 +19,16 @@ public enum StockGameCommandType implements CommandTypeInfo{
     private String cmd;
     private String txt;
     private Class<?>[] params;
-    
-    StockGameCommandType(String cmd, String txt){
+
+    StockGameCommandType(String cmd, String txt) {
         this.cmd = cmd;
         this.txt = txt;
     }
-    
-    StockGameCommandType(String cmd, String txt, Class<?>... params){
-       this.cmd = cmd;
-       this.txt = txt;
-       this.params = params;
+
+    StockGameCommandType(String cmd, String txt, Class<?>... params) {
+        this.cmd = cmd;
+        this.txt = txt;
+        this.params = params;
     }
 
     @Override
@@ -46,10 +45,9 @@ public enum StockGameCommandType implements CommandTypeInfo{
     public Class<?>[] getParamTypes() {
         return params;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return getName() + " " + getHelpText();
     }
 
-    
 }

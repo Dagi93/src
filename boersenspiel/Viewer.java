@@ -1,9 +1,8 @@
 package boersenspiel;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.util.TimerTask;
-
-
 
 import java.util.logging.Logger;
 
@@ -27,17 +26,16 @@ public class Viewer extends JFrame {
             clockLabel.repaint();
         }
 
-        public String createText() {     
+        public String createText() {
             String output = "<html><body>Aktienkurse:<br>";
             output += provider.allSharesToString() + "</body></html>";
             return output;
         }
     }
 
-
     public Viewer(StockPriceProvider provider) {
         this.provider = provider;
-        
+
         clockLabel = new JLabel("coming soon ...");
         clockLabel.setFont(font);
         clockLabel.setForeground(Color.BLUE);
