@@ -149,10 +149,15 @@ public class AccountManagerImpl implements AccountManager {
     public HashMap<String, Player> getGambler() {
         return gambler;
     }
-
-    public void showTrans(String playerName, int OPTION) {
-
-        switch (OPTION) {
+    
+    public void showTrans(String playerName, String type) throws BadInputException {
+        
+        int tc = 0;
+        
+        if(type.toCharArray()[0] >= '1' && type.toCharArray()[0] <= '3')
+            tc = type.toCharArray()[0]-'0';
+        
+        switch (tc) {
         case 1:
             for (Transaction t : gambler.get(playerName).getTrans())
                 System.out.println(t.toString());
@@ -165,7 +170,13 @@ public class AccountManagerImpl implements AccountManager {
                 System.out.println(t.toString());
             break;
 
+        
+        case 0:
+        Comparator<Transaction> comp2 = new TransNameComparator();
+        Collections.sort(gambler.get(playerName).getTrans(), comp2);
+        for (Transaction t : gambler.get(playerName).getTrans())
+            if(t.getShare().getName().equals(type))
+            System.out.println(t.toString());
         }
-
     }
 }

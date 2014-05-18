@@ -12,5 +12,5 @@ public interface AccountManager {
     long getAllAssetsOf(String playerName) throws PlayerNotFoundException;
     long getSharesValueOf(String playerName) throws PlayerNotFoundException;
     boolean checkForProfit(String playerName, String shareName) throws PlayerNotFoundException, ShareNotFoundException;
-    void showTrans(String playerName, int option);
+    void showTrans(String playerName, String type) throws BadInputException;
 }
