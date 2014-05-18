@@ -47,6 +47,7 @@ public class AccountManagerImpl implements AccountManager {
         } else {
             throw new NotEnoughMoneyException("Nicht genügend Geld.");
         }
+        bob.getTrans().add(new Transaction(bob, share, amount));
         return "Spieler " + playerName + " hat " + amount + " " + shareName + "-Aktien zum Preis von " + share.getValue() + " gekauft.";
 
     }
@@ -78,6 +79,7 @@ public class AccountManagerImpl implements AccountManager {
                 throw new NullPointerException("Spieler- oder Aktienname nicht gefunden.");
             }
         }
+        bob.getTrans().add(new Transaction(bob, share, amount));
         return "Spieler " + playerName + " hat " + amount + " " + shareName + "-Aktien zum Preis von " + share.getValue() + " verkauft.";
     }
 
@@ -134,39 +136,7 @@ public class AccountManagerImpl implements AccountManager {
         else
             return false;
     }
-
-    public ShareItem search(ShareItem[] collection, String shareName) throws ShareNotFoundException {
-
-        if (collection.length > 0) {
-            for (int index = 0; index < collection.length; index++) {
-                if (collection[index].getName().equals(shareName)) {
-                    return collection[index];
-                }
-            }
-        }
-        log.log(Level.SEVERE, "Dieses Aktienpaket befindet sich nicht im Aktiendepot", new ShareNotFoundException(
-                "Dieses Aktienpaket befindet sich nicht im Aktiendepot"));
-        throw new ShareNotFoundException("Dieses Aktienpaket befindet sich nicht im Aktiendepot");
-    }
-
-    public Player[] newPlayerArray(Player[] oldPlayerArray) {
-
-        Player[] newPlayerArray = new Player[oldPlayerArray.length + 1];
-        return newPlayerArray;
-    }
-
-    public Player[] copy(Player[] gambler, Player[] newPlayerArray, Player bob) {
-
-        for (int index = 0; index < newPlayerArray.length; index++) {
-            if (index != newPlayerArray.length - 1) {
-                newPlayerArray[index] = gambler[index];
-            } else {
-                newPlayerArray[index] = bob;
-            }
-        }
-        return newPlayerArray;
-    }
-
+    
     public void turnAgentOn(String playerName) throws PlayerNotFoundException {
         Player bob = gambler.get(playerName);
         PlayerAgent agent = new RandomPlayerAgent(bob, provider);

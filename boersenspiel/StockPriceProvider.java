@@ -3,11 +3,12 @@ package boersenspiel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.TimerTask;
 
 public abstract class StockPriceProvider implements StockPriceInfo {
 
-    static ArrayList<Share> shares = new ArrayList<Share>();
+    static List<Share> shares = new ArrayList<Share>();
     Zeitgeist gini = Zeitgeist.getInstance();
 
     public StockPriceProvider() {

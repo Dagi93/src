@@ -1,9 +1,14 @@
 package boersenspiel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
     private String name;
     private CashAccount cAcc;
     private ShareDepositAccount sAcc;
+    private List<Transaction> trans = new ArrayList<Transaction>();
+    
 
     public Player(String name) {
         this.name = name;
@@ -39,6 +44,14 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public List<Transaction> getTrans() {
+        return trans;
+    }
+
+    public void setTrans(List<Transaction> trans) {
+        this.trans = trans;
     }
 
 }
